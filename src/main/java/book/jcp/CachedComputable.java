@@ -1,4 +1,4 @@
-package jcp;
+package book.jcp;
 
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ConcurrentHashMap;

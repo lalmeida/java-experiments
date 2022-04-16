@@ -1,11 +1,9 @@
-package jcp;
+package book.jcp;
 
-import jcp.CachedComputable;
-import jcp.Computable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CachedComputableTest {
 

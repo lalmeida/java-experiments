@@ -1,4 +1,4 @@
-package jcp;
+package book.jcp;
 
 public interface Computable<A, V> {
 

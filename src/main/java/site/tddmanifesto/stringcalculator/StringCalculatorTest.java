@@ -20,4 +20,8 @@ public class StringCalculatorTest {
         assertEquals(9, stringCalculator.add(3+","+6));
     }
 
+   @Test void should_return_sum_of_multiple_inputs() {
+        assertEquals(17, stringCalculator.add("3,1,7,2,4"));
+    }
+
 }

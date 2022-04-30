@@ -29,4 +29,14 @@ public class StringCalculatorTest {
         assertEquals(17, stringCalculator.add("3\n1\n7\n2\n4"));
     }
 
+    @Test void should_not_allow_separators_in_the_end() {
+        try {
+            stringCalculator.add(",");
+            fail("Should have thrown an exception.");
+        } catch (IllegalArgumentException e) {
+            // Expected!
+        }
+
+    }
+
 }

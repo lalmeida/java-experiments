@@ -3,6 +3,7 @@ package site.tddmanifesto.stringcalculator;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class StringCalculatorTest {
 
@@ -22,6 +23,10 @@ public class StringCalculatorTest {
 
    @Test void should_return_sum_of_multiple_inputs() {
         assertEquals(17, stringCalculator.add("3,1,7,2,4"));
+    }
+
+    @Test void should_handle_new_line_as_separators() {
+        assertEquals(17, stringCalculator.add("3\n1\n7\n2\n4"));
     }
 
 }

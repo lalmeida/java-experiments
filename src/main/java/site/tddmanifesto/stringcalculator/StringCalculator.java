@@ -14,16 +14,21 @@ public class StringCalculator {
             int sum = 0;
             String token;
             while (tokenizer.hasMoreTokens()) {
-                token = tokenizer.nextToken();
-                if (tokenIsDelimeter(token)) {
-                    if (!tokenizer.hasMoreTokens()) {
-                        throw new IllegalArgumentException("Empty argument after last separator not allowed.");
-                    }
-                } else {
-                    sum += Integer.parseInt(token);
-                }
+                sum += processToken(tokenizer.nextToken(), !tokenizer.hasMoreTokens());
             }
             return sum;
+        }
+    }
+
+    private int processToken(String token, boolean lastToken) {
+        if (tokenIsDelimeter(token)) {
+            if (lastToken) {
+                throw new IllegalArgumentException("Empty argument after last separator not allowed.");
+            } else {
+                return 0; // delimiters don´t change sum
+            }
+        } else {
+            return Integer.parseInt(token);
         }
     }
 

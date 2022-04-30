@@ -6,10 +6,10 @@ public class StringCalculator {
         if (s.isBlank()) {
             return 0;
         } else if (!s.contains(",")) {
-            return Integer.valueOf(s);
+            return Integer.parseInt(s);
         } else {
             String [] str = s.split(",");
-            return Integer.valueOf(str[0]) + Integer.valueOf(str[1]);
+            return Integer.parseInt(str[0]) + Integer.parseInt(str[1]);
         }
     }
 

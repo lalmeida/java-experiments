@@ -10,14 +10,17 @@ public class StringCalculator {
         if (s.isBlank()) {
             return 0;
         } else {
-            StringTokenizer tokenizer = new StringTokenizer(s, DELIM, true);
-            int sum = 0;
-            String token;
-            while (tokenizer.hasMoreTokens()) {
-                sum += processToken(tokenizer.nextToken(), !tokenizer.hasMoreTokens());
-            }
-            return sum;
+            return addNumbers(s, DELIM);
         }
+    }
+
+    private int addNumbers(String numberString, String delimiters) {
+        int sum = 0;
+        StringTokenizer tokenizer = new StringTokenizer(numberString, delimiters, true);
+        while (tokenizer.hasMoreTokens()) {
+            sum += processToken(tokenizer.nextToken(), !tokenizer.hasMoreTokens());
+        }
+        return sum;
     }
 
     private int processToken(String token, boolean lastToken) {

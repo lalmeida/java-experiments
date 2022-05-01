@@ -13,4 +13,10 @@ public class StringCalculatorTest {
         assertEquals(4, stringCalculator.add("//;\n1;3"));
     }
 
+    @Test void summing_with_pipe_as_separator() {
+        assertEquals(6, stringCalculator.add("//|\n1|2|3"));
+    }
+
+
+
 }

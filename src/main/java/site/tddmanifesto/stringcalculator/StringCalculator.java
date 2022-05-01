@@ -1,10 +1,6 @@
 package site.tddmanifesto.stringcalculator;
 
-import java.util.StringTokenizer;
-
 public class StringCalculator {
-
-    public static final String DELIM = ",\n";
 
     public int add(String s) {
         String[] parts = s.split("\n");
@@ -31,22 +27,6 @@ public class StringCalculator {
             }
         }
         return sum;
-    }
-
-    private int processToken(String token, boolean lastToken, String delimiter) {
-        if (tokenIsDelimiter(token, delimiter)) {
-            if (lastToken) {
-                throw new IllegalArgumentException("Empty argument after last separator not allowed.");
-            } else {
-                return 0; // delimiters don´t change sum
-            }
-        } else {
-            return Integer.parseInt(token);
-        }
-    }
-
-    private boolean tokenIsDelimiter(String token, String delimiter) {
-        return delimiter.contains(token);
     }
 
 }

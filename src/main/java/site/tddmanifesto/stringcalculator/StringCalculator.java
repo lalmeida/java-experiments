@@ -24,7 +24,7 @@ public class StringCalculator {
     }
 
     private int processToken(String token, boolean lastToken) {
-        if (tokenIsDelimeter(token)) {
+        if (tokenIsDelimiter(token)) {
             if (lastToken) {
                 throw new IllegalArgumentException("Empty argument after last separator not allowed.");
             } else {
@@ -35,7 +35,7 @@ public class StringCalculator {
         }
     }
 
-    private boolean tokenIsDelimeter(String token) {
+    private boolean tokenIsDelimiter(String token) {
         return DELIM.contains(token);
     }
 

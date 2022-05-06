@@ -28,7 +28,6 @@ public class StringCalculator {
                 } else {
                     negativeNumbers.add(number);
                 }
-
                 i = endOfNumberIndex;
             } else { //we are processing the delimiter
                 i = processDelimiter(numericPart, expectedDelimiter, i);

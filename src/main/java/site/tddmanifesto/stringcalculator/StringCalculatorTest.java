@@ -29,5 +29,21 @@ public class StringCalculatorTest {
             assertEquals("'|' expected, but ',' found at position 3.", e.getMessage());
         }
     }
+     @Test void should_show_error_message_when_input_has_negative_number() {
+        try {
+            stringCalculator.add("//,\n1,-2");
+            fail("Should throw exception");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Negative number(s) not allowed: -2", e.getMessage());
+        }
+    }
+    @Test void should_show_error_message_for_each_negative_number_when_input_has_multiple_negative_numbers() {
+        try {
+            stringCalculator.add("//,\n1,-2,-7");
+            fail("Should throw exception");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Negative number(s) not allowed: -2, -7", e.getMessage());
+        }
+    }
 
 }

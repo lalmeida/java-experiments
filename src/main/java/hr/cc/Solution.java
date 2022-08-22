@@ -5,41 +5,38 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-/* !!!The solution to the Camel Case challenge must be in one class called Solution!!! */
 public class Solution {
 
     public static void main(String[] args) {
 
-        Solution sol = new Solution();
+       List<Operation> operations = readInput(System.in);
 
-        List<Operation> operations = sol.readInput(System.in);
-
-        List<String> outputLines = sol.process(operations);
+        List<String> outputLines = process(operations);
 
         printResults(outputLines);
     }
 
     private static void printResults(List<String> outputLines) {
 
-        for (String line: outputLines) {
+        for (String line : outputLines) {
             System.out.println(line);
         }
 
     }
 
-    List<Operation> readInput(InputStream in) {
+    static List<Operation> readInput(InputStream in) {
 
         Scanner scan = new Scanner(in);
         List<Operation> result = new ArrayList<>();
 
         while (scan.hasNextLine()) {
             String[] tokens = scan.nextLine().split(";");
-            result.add(new Solution.Operation(Action.from(tokens[0]), Type.from(tokens[1]), tokens[2]));
+            result.add(new Operation(Action.from(tokens[0]), Type.from(tokens[1]), tokens[2]));
         }
         return result;
     }
 
-    List<String> process(List<Operation> operations) {
+    static List<String> process(List<Operation> operations) {
         ArrayList<String> result = new ArrayList<>();
 
         for (Operation operation : operations) {
@@ -92,8 +89,9 @@ public class Solution {
         return sb.toString();
     }
 
+}
 
-    static class Operation {
+    class Operation {
 
         private final Action action;
         private final Type type;
@@ -162,5 +160,3 @@ public class Solution {
             }
         }
     }
-
-}

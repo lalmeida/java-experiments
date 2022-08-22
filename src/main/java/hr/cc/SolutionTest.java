@@ -1,8 +1,6 @@
 package hr.cc;
 
-import hr.cc.Solution.Action;
-import hr.cc.Solution.Operation;
-import hr.cc.Solution.Type;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -15,7 +13,7 @@ class SolutionTest {
     void processSingleLine() {
 
         List<String> lines =
-                new Solution().process(List.of( new Operation(
+                Solution.process(List.of( new Operation(
                         Action.Split, Type.Class, "FooBar")));
 
         assertEquals(1, lines.size());
@@ -27,7 +25,7 @@ class SolutionTest {
     void processThreeSplits() {
 
         List<String> lines =
-                new Solution().process(List.of(
+                Solution.process(List.of(
                         new Operation(Action.Split, Type.Class, "FooBar"),
                         new Operation(Action.Split, Type.Method, "fooBar"),
                         new Operation(Action.Split, Type.Variable, "firstName")
@@ -44,7 +42,7 @@ class SolutionTest {
     void processThreeSplitsWithASingleWordEach() {
 
         List<String> lines =
-                new Solution().process(List.of(
+                Solution.process(List.of(
                         new Operation(Action.Split, Type.Class, "Person"),
                         new Operation(Action.Split, Type.Method, "execute"),
                         new Operation(Action.Split, Type.Variable, "name")
@@ -61,7 +59,7 @@ class SolutionTest {
     void processThreeCombineWithASingleWordEach() {
 
         List<String> lines =
-                new Solution().process(List.of(
+                Solution.process(List.of(
                         new Operation(Action.Combine, Type.Class, "Person"),
                         new Operation(Action.Combine, Type.Method, "Execute"),
                         new Operation(Action.Combine, Type.Variable, "Name")
@@ -78,7 +76,7 @@ class SolutionTest {
     void processThreeCombines() {
 
         List<String> lines =
-                new Solution().process(List.of(
+                Solution.process(List.of(
                         new Operation(Action.Combine, Type.Class, "foo Bar"),
                         new Operation(Action.Combine, Type.Method, "Foo Bar"),
                         new Operation(Action.Combine, Type.Variable, "First Name")

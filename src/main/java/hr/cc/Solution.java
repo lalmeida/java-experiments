@@ -82,7 +82,10 @@ public class Solution {
             } else if (Character.isUpperCase(c)) { // else if upper case
                 sb.append(' ');
                 sb.append(Character.toLowerCase(c));
-            } else {
+            } else if (c == '(' || c == ')' ) {
+                // do nothing;
+            }
+            else {
                 sb.append(c);
             }
         }

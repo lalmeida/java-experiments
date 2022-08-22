@@ -27,7 +27,7 @@ class SolutionTest {
         List<String> lines =
                 Solution.process(List.of(
                         new Operation(Action.Split, Type.Class, "FooBar"),
-                        new Operation(Action.Split, Type.Method, "fooBar"),
+                        new Operation(Action.Split, Type.Method, "fooBar()"),
                         new Operation(Action.Split, Type.Variable, "firstName")
                 ));
 
@@ -44,7 +44,7 @@ class SolutionTest {
         List<String> lines =
                 Solution.process(List.of(
                         new Operation(Action.Split, Type.Class, "Person"),
-                        new Operation(Action.Split, Type.Method, "execute"),
+                        new Operation(Action.Split, Type.Method, "Execute"),
                         new Operation(Action.Split, Type.Variable, "name")
                 ));
 

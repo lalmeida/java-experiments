@@ -1,4 +1,4 @@
-package features.lambda;
+package features.lambda.methodreference.staticz;
 
 
 interface StringFunc {

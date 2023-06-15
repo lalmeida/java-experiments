@@ -1,11 +1,14 @@
 package features.concurrency;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -56,9 +59,10 @@ public class HashMapTest {
     }
 
     @Test
-    public void readingMapEntry() throws InterruptedException {
+    public void synchronizedHashMapBlocksGet() throws InterruptedException, ExecutionException, TimeoutException {
 
         ConcurrentHashMap<String, Integer> map = new ConcurrentHashMap<>();
+
         Concurrency.parallelGetAndLongPut(map);
 
 

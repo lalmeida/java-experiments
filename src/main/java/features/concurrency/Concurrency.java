@@ -37,45 +37,54 @@ public class Concurrency {
 
     }
 
-    public static void parallelGetAndLongPut(ConcurrentHashMap<String, Integer> map) throws InterruptedException {
+    public static void parallelGetAndLongPut(ConcurrentHashMap<String, Integer> map) throws InterruptedException, ExecutionException, TimeoutException {
         map.put("test", 0);
 
-        ExecutorService executorService = Executors.newFixedThreadPool(4);
+        ExecutorService updateService = Executors.newFixedThreadPool(2);
+        for (int i = 0; i < 4; i++) {
+            updateService.submit(() -> map.compute("test",
+                    (k, v) -> {
+                        System.out.println("Starting update: Old Value:" + v);
+                        v++;
+                        try {
+                            Thread.sleep(5 * 1000);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        System.out.println("Finishing update: New Value:" + v);
+                        return v;
+                    })
 
-        executorService.submit( () -> map.compute("test",
-                (k, v) ->   {
-                    v++;
-                    System.out.println("New Value:" + v);
-                    try {
-                        Thread.sleep(5 * 1000);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    return v;
-                })
-
-        );
-
-        Thread.sleep(1000);
-
-        for (int i=0; i < 10; i++) {
-            executorService.submit( () ->
-                    {
-                        //new FutureTask(() -> {
-                            Integer value = map.get("test");
-                            System.out.println("Value retrieved: " + value);
-                            return value;
-                        //});
-
-                    }
             );
         }
 
+        ScheduledExecutorService readService = Executors.newScheduledThreadPool(2);
+        Runnable task = () -> {
 
-        executorService.shutdown();
-        executorService.awaitTermination(10 , TimeUnit.SECONDS);
+            try {
+                System.out.println("Getting value: " + map.get("test"));
+            } catch (Exception e ) {
+                System.out.println("Exception! : " + e + ", cause: " + e.getCause());
+            }
 
-        System.out.println("Value: " + map.get("test"));
+        };
+        ScheduledFuture<?> sFuture =
+                readService.scheduleAtFixedRate(task, 0, 500, TimeUnit.MILLISECONDS);
+
+
+        // pause for scheduling to take place
+        Thread.sleep(30 * 1000);
+
+        System.out.println("Final sch Future: " + sFuture);
+
+
+        updateService.shutdown();
+        readService.shutdown();
+        updateService.awaitTermination(0 , TimeUnit.SECONDS);
+        readService.awaitTermination(0 , TimeUnit.SECONDS);
+
+        System.out.println("Final Value: " + map.get("test"));
+        System.out.println("Final sch Future: " + sFuture);
 
     }
 }

@@ -37,54 +37,21 @@ public class Concurrency {
 
     }
 
-    public static void parallelGetAndLongPut(ConcurrentHashMap<String, Integer> map) throws InterruptedException, ExecutionException, TimeoutException {
-        map.put("test", 0);
+    public static void LongPutIncrementingValue(Map<String, Integer> map, String key, int timeInSeconds) throws InterruptedException, ExecutionException, TimeoutException {
 
-        ExecutorService updateService = Executors.newFixedThreadPool(2);
-        for (int i = 0; i < 4; i++) {
-            updateService.submit(() -> map.compute("test",
-                    (k, v) -> {
-                        System.out.println("Starting update: Old Value:" + v);
-                        v++;
-                        try {
-                            Thread.sleep(5 * 1000);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                        System.out.println("Finishing update: New Value:" + v);
-                        return v;
-                    })
-
-            );
-        }
-
-        ScheduledExecutorService readService = Executors.newScheduledThreadPool(2);
-        Runnable task = () -> {
-
-            try {
-                System.out.println("Getting value: " + map.get("test"));
-            } catch (Exception e ) {
-                System.out.println("Exception! : " + e + ", cause: " + e.getCause());
-            }
-
-        };
-        ScheduledFuture<?> sFuture =
-                readService.scheduleAtFixedRate(task, 0, 500, TimeUnit.MILLISECONDS);
-
-
-        // pause for scheduling to take place
-        Thread.sleep(30 * 1000);
-
-        System.out.println("Final sch Future: " + sFuture);
-
+        ExecutorService updateService = Executors.newSingleThreadExecutor();
+        updateService.submit(() ->
+            map.compute(key, (k,v) -> {
+                try {
+                    Thread.sleep(timeInSeconds * 1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                return ++v;
+            })
+        );
 
         updateService.shutdown();
-        readService.shutdown();
-        updateService.awaitTermination(0 , TimeUnit.SECONDS);
-        readService.awaitTermination(0 , TimeUnit.SECONDS);
-
-        System.out.println("Final Value: " + map.get("test"));
-        System.out.println("Final sch Future: " + sFuture);
 
     }
 }

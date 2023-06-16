@@ -3,6 +3,8 @@ package features.concurrency;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
+import java.time.Duration;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +15,7 @@ import java.util.concurrent.TimeoutException;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class HashMapTest {
+
 
 
     @Test
@@ -58,20 +61,43 @@ public class HashMapTest {
 
     }
 
+
     @Test
-    public void synchronizedHashMapBlocksGet() throws InterruptedException, ExecutionException, TimeoutException {
+    public void synchronizedHashMapDoesBlockGets() throws InterruptedException, ExecutionException, TimeoutException {
+        final String TEST_KEY = "test";
 
-        ConcurrentHashMap<String, Integer> map = new ConcurrentHashMap<>();
+        Map<String, Integer>  map = Collections.synchronizedMap(new HashMap<String, Integer>());
+        map.put(TEST_KEY, 0);
 
-        Concurrency.parallelGetAndLongPut(map);
+        Concurrency.LongPutIncrementingValue(map, TEST_KEY, 2);
+        Thread.sleep(100); //waiting for long Put to start
 
+        long start = System.currentTimeMillis();
+        map.get("different_key");
+        long end = System.currentTimeMillis();
 
+        assertTrue(end - start > 1500, "Get should be blocked and wait for put to finish.");
 
     }
 
-    // todo create a slow computation for  putIfAbsent/computeIfAbsent/computeIfPresent
-    // and check if it blocks threads wanting to read that key-value pair
+    /**
+     * From ConcurrentHashMap javadoc´s
+     * "Retrieval operations (including get) generally do not block"
+     * Let´s test it!
+     */
+    @Test
+    public void concurrentHashMapDoesNotBlockGets() throws InterruptedException, ExecutionException, TimeoutException {
+        final String TEST_KEY = "test";
 
-    // check & implement read-through cache
+        Map<String, Integer> map = new ConcurrentHashMap<>();
+        map.put(TEST_KEY, 0);
+
+        Concurrency.LongPutIncrementingValue(map, TEST_KEY, 2);
+        Thread.sleep(100); //waiting for long Put to start
+
+        assertTimeout(Duration.ofSeconds(1), () -> map.get(TEST_KEY),
+                "ConcurrentHashMap gets should not get blocked");
+    }
+
 
 }

@@ -1,7 +1,5 @@
 package lc.add2numbers;
 
-import lc.add2numbers.ListNode;
-
 public class SolutionTestUtils {
 
     /**

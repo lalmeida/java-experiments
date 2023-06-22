@@ -1,5 +1,8 @@
 package lc.add2numbers;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 /**
  * Definition for singly-linked list.
  * public class ListNode {
@@ -14,29 +17,30 @@ class Solution {
 
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
 
-        long n1 = decodeNumber(l1);
-        long n2 = decodeNumber(l2);
+        BigInteger n1 = decodeNumber(l1);
+        BigInteger n2 = decodeNumber(l2);
 
-        long sum = n1+n2;
+        BigInteger sum = n1.add(n2);
 
         return encodeNumber(sum);
 
     }
 
 
-    public static ListNode encodeNumber(long number) {
+    public static ListNode encodeNumber(BigInteger number) {
 
-        int numberOfDigits = (number == 0) ?
+        int numberOfDigits = (number.compareTo(BigInteger.ZERO)==0) ?
                 1 :
-                (int) (1 + Math.floor (Math.log10(number)));
+                (int) (1 + Math.floor (Math.log10(number.doubleValue())));
 
         ListNode node = null;
         ListNode previous = null;
         for (int i=numberOfDigits-1; i >=0; i--) {
-            long digit = number / (long) (Math.pow(10,i));
-            number -= digit * (long) (Math.pow(10,i));
+            //long digit = number.divide() / (long) (Math.pow(10,i));
+            BigInteger digit = number.divide(BigInteger.TEN.pow(i));
+            number = number.subtract(digit.multiply(BigInteger.TEN.pow(i)));
 
-            node = new ListNode( (int) digit);
+            node = new ListNode( digit.intValue() );
 
             if (previous!=null) {
                 node.next = previous;
@@ -49,10 +53,12 @@ class Solution {
 
 
 
-    public static long decodeNumber(ListNode node) {
-        long number=0;
+    public static BigInteger decodeNumber(ListNode node) {
+
+
+        BigInteger number= BigInteger.ZERO;
         for (int power=0; node != null  ; power++) {
-            number += node.val * Math.pow(10, power);
+            number = number.add( BigInteger.valueOf(node.val).multiply(BigInteger.TEN.pow(power)) );
             node = node.next;
         }
         return number;

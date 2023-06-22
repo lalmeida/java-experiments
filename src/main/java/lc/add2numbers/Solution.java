@@ -2,66 +2,62 @@ package lc.add2numbers;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Objects;
 
 /**
  * Definition for singly-linked list.
  * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode() {}
- *     ListNode(int val) { this.val = val; }
- *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * int val;
+ * ListNode next;
+ * ListNode() {}
+ * ListNode(int val) { this.val = val; }
+ * ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
 class Solution {
 
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        Objects.requireNonNull(l1);
+        Objects.requireNonNull(l2);
 
-        BigInteger n1 = decodeNumber(l1);
-        BigInteger n2 = decodeNumber(l2);
+        int carry = 0;
+        ListNode node = new ListNode(0);
+        ListNode start = node;
 
-        BigInteger sum = n1.add(n2);
-
-        return encodeNumber(sum);
-
-    }
-
-
-    public static ListNode encodeNumber(BigInteger number) {
-
-        int numberOfDigits = (number.compareTo(BigInteger.ZERO)==0) ?
-                1 :
-                (int) (1 + Math.floor (Math.log10(number.doubleValue())));
-
-        ListNode node = null;
-        ListNode previous = null;
-        for (int i=numberOfDigits-1; i >=0; i--) {
-            //long digit = number.divide() / (long) (Math.pow(10,i));
-            BigInteger digit = number.divide(BigInteger.TEN.pow(i));
-            number = number.subtract(digit.multiply(BigInteger.TEN.pow(i)));
-
-            node = new ListNode( digit.intValue() );
-
-            if (previous!=null) {
-                node.next = previous;
+        while (l1 != null || l2 != null) {
+            int value1 = 0;
+            if (l1 != null) {
+                value1 = l1.val;
+                l1 = l1.next;
             }
-            previous = node;
+
+            int value2 = 0;
+            if (l2 != null) {
+                value2 = l2.val;
+                l2 = l2.next;
+            }
+
+            int sum = value1 + value2 + carry;
+            if (sum >= 10) {
+                node.val = sum - 10;
+                carry = 1;
+            } else if (sum > 0) {
+                node.val = sum;
+                carry = 0;
+            }
+
+            if (l1 != null || l2 != null) {
+                node.next = new ListNode(0);
+                node = node.next;
+            } else if (carry != 0) { // both l1 & l2 are null
+                node.next = new ListNode(1);
+                break;
+            } else {
+                break;
+            }
 
         }
-        return node;
-    }
-
-
-
-    public static BigInteger decodeNumber(ListNode node) {
-
-
-        BigInteger number= BigInteger.ZERO;
-        for (int power=0; node != null  ; power++) {
-            number = number.add( BigInteger.valueOf(node.val).multiply(BigInteger.TEN.pow(power)) );
-            node = node.next;
-        }
-        return number;
+        return start;
     }
 
 }

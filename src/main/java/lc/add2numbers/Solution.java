@@ -24,7 +24,7 @@ class Solution {
         ListNode node = new ListNode(0);
         ListNode start = node;
 
-        while (l1 != null || l2 != null) {
+        while (true) {
             int value1 = 0;
             if (l1 != null) {
                 value1 = l1.val;

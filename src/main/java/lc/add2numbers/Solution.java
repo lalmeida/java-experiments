@@ -21,39 +21,39 @@ class Solution {
         Objects.requireNonNull(l2);
 
         int carry = 0;
-        ListNode node = new ListNode(0);
-        ListNode start = node;
+        ListNode dummy = new ListNode(0); //dummy node
 
-        while (true) {
+        ListNode previous = dummy;
+        ListNode current;
+
+        while (l1 != null || l2 != null) {
             int value1 = 0;
             if (l1 != null) {
                 value1 = l1.val;
-                l1 = l1.next;
+                l1 = l1.next; // advancing pointer
             }
 
             int value2 = 0;
             if (l2 != null) {
                 value2 = l2.val;
-                l2 = l2.next;
+                l2 = l2.next; // advancing pointer
             }
 
             int sum = value1 + value2 + carry;
             carry = sum/10;
-            node.val = sum%10;
+            current = new ListNode(sum%10);
+            previous.next = current; // linking previous node to current node
 
-
-            if (l1 != null || l2 != null) {
-                node.next = new ListNode(0);
-                node = node.next;
-            } else if (carry != 0) { // both l1 & l2 are null
-                node.next = new ListNode(1);
-                break;
-            } else {
-                break;
-            }
+            previous = current; // advancing pointer
 
         }
-        return start;
+
+        if (carry == 1) {
+            current = new ListNode(carry);
+            previous.next = current;  // linking previous node to current node
+        }
+
+        return dummy.next;
     }
 
 }

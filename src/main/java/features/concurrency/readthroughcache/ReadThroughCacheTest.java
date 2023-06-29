@@ -57,9 +57,6 @@ public class ReadThroughCacheTest {
             executorService.submit(() -> rtCache.retrieveData(2));
         }
 
-        // small wait so that tasks can start
-        Thread.sleep(100);
-
         executorService.shutdown();
         executorService.awaitTermination(3, TimeUnit.SECONDS);
 
